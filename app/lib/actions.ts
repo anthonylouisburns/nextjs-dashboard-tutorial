@@ -88,7 +88,6 @@ export async function createInvoice(prevState: State, formData: FormData) {
 
 export async function updateInvoice(
     id: string,
-    prevState: State,
     formData: FormData):Promise<void> {
     const validatedFields = UpdateInvoice.safeParse({
         customerId: formData.get('customerId'),
@@ -113,14 +112,13 @@ export async function updateInvoice(
     SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
     WHERE id = ${id}
   `;
-  revalidatePath('/dashboard/invoices');
-  redirect('/dashboard/invoices');
-  return;
     } catch (error) {
         console.error('Error updating invoice', error);
         return;
     }
 
+    revalidatePath('/dashboard/invoices');
+    redirect('/dashboard/invoices');
 }
 
 export async function deleteInvoice(id: string) {
